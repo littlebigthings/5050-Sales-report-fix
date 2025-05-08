@@ -18,7 +18,10 @@ const OUTPUT_FILE = path.join(__dirname, 'orders.json');
 const TRACK_FILE = path.join(__dirname, 'progress.json');
 
 const auth = new google.auth.GoogleAuth({
-  keyFile: path.join(__dirname, 'google-service-account.json'),
+  credentials:{
+    "client_email": "googlesheetapi@gsheet-api-fbf4a.iam.gserviceaccount.com",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDUnHqE3V2ckDAu\npUB8HctQhPQ7S8OIDJdkDcV/nhe7rxCBV04PAPLSo4n/8P9Mq4oXTOS6GXJ7dArL\nuMW9UjCXweuCMrcryyXIbUSTxbpiYBwl1cIspAmMxvPpRyBMfuATIlVelF0MfOK4\nC4yTfJuA3CilRjQMGWoBnTVAguG02oJr5cY9U2IYTY4oSVSqGHKA4BKAJNVWRuKh\no4OtWvLTpXdsuA0IZNfeZZi9gyvgXk02FxNzI83+VDHLD0T+MN1bzQG3SkCXC5xs\n68u7IMfMR9uS7N0J3e26Verobw67HH1loPQHH6fWPwWu1LM9JeNo8B6SnTowTuPR\nKvNiLfCPAgMBAAECggEAYVDsfZNLjWWsQDWQoh8LGGR63AdOTSAiTYBGNac5ysUT\nY3iAOLrg6oxDlryLRt8/unGOQiZysdJIPL5q+EC+EECJWVN4Zxm5xhdJq+/146CF\nUcYZdlBxNJg+Pbk6Lflm/Csbc0qqmpQxPDfBFSMUlHNxQVE0cpNRY8K/BLPDtwD1\nly4ua3mEXHfIQ6wPlF7P4tiTsWw2C6QmAkcRnqYHLGBVaR3Q+1vbjmo8nOCMKazD\nUU8aFQvlk4xPOd7XY7P3+zRLInyL17+tOeZBuC1l9HPLLAMChn4qmgbNuPZhGVK4\nzudzysJh0q7L2I49RUYpAuVmu8u5PYRjCujWTC85MQKBgQD1ce3BRENYnAjM0sQL\nxbAttPy9r0teDpgLy92RMWH46KinxM3Y5ZTGDCU9wLXsrBlS+K9bjr++f0qykwq3\nerkdQqhefQ9h+cv/Okx1i0sakmwxvRJ0gxkBVK4etI1mzDhPjjSGXwXN6XppEY4/\nmwnajxiiLwva9MvgOCDuyjn9cQKBgQDdwRZMH8lSMytDFPDVN9Uw2dziLZGEA5nZ\nMxnTLw3QSiemTOSgNap036W34kW1d5HOKBnAkewb9e8zgwOvMnFHrm5bJpq4nkBG\nkWkCB2hsNe4mv/Ufsmb0Shh3XQtohOvd+6yHt8JsbaKlYmTSUpcB+e406Q2w/r54\nYSEeKmfN/wKBgCpGbUUUlOT2Oy3MP6gnbKjyu3WQc9LHgLjHbGpNrypIKIR9CVeK\nc42JGgEA6FTTb6ky3EFQ3QXatur7GKVxpeC8UnOz5qphdBmJ2RGF5HG3Npt6jWs0\nCWKJS1ROlOxX0HsjaziZtU46ILNoKrAZ7CCQ9RU6NTiJYXRFNqbqfgKBAoGAPHLr\nKhssHQ03yNSHhgfvRJ7O+JTlavA0WyHz8z6LbHEad9nUJNwcODnTCdpTmFEc3O7P\nflAI5eJXr1oSggqlGJ4zFQPj/1mcOeBfmJ7+VykoX0XKgzZ1nDgqjTc+6eH6DgwS\nDvkHtdj5Ek5NH4xF/9LqnV++TLZUo6oOhhOXMm8CgYAhrPhPaKIuEUWAnEZCgRaq\nZMjkzlLos6EBeRxQpOqm2J8NfRUJyyZa8YzLrh8E4+9WvbQpm/57oVgljW7GcTY8\npVIymxZURBzQDtBtgKexg+0XXfT1raiEXDE8JtIQ3z2KWsQrjTu19VDEHMn2HFkb\nMDFiqfqCLQS7APNOaTHjKQ==\n-----END PRIVATE KEY-----\n".replace("/\\n/g, '\n'"),
+  },
   scopes: ['https://www.googleapis.com/auth/spreadsheets']
 });
 
@@ -254,7 +257,7 @@ async function appendOrUpdateSheet(products) {
 
 app.get('/resume', async (req, res) => {
   try {
-    const BATCH_SIZE = 100;
+    const BATCH_SIZE = 1;
     let offset = await loadProgress();
     let totalProcessed = 0;
 
