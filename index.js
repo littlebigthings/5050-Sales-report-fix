@@ -3,13 +3,16 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const { google } = require('googleapis');
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const app = express();
 const PORT = 3000;
 
 const SITE_TOKEN = "3e5695b2ac30548767d8dfe1a9635b496a58657dac28e30a7bd1680f7f3736b2";
 const SITE_ID = "63d842ee28d89a29c36eb8d7";
-const GOOGLE_SHEET_API_KEY = "AIzaSyBwla_zTqayVmOElBIGK0PPpuaxORsxORY";
+
 const SHEET_ID = "1Mtd5ZV-jcpvzidZrXvVSFnyfTq0Su9ClwyDz9SnDr5E";
 const SHEET_RANGE = 'Sheet1!B:C'
 const SHEET_RANGE_UPDATE = 'Sheet1!A:H'
@@ -17,10 +20,13 @@ const SHEET_RANGE_UPDATE = 'Sheet1!A:H'
 const OUTPUT_FILE = path.join(__dirname, 'orders.json');
 const TRACK_FILE = path.join(__dirname, 'progress.json');
 
+console.log(process.env.GOOGLE_SHEETS_CREDENTIALS)
+
 const auth = new google.auth.GoogleAuth({
   credentials:{
-    "client_email": "googlesheetapi@gsheet-api-fbf4a.iam.gserviceaccount.com",
-    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDUnHqE3V2ckDAu\npUB8HctQhPQ7S8OIDJdkDcV/nhe7rxCBV04PAPLSo4n/8P9Mq4oXTOS6GXJ7dArL\nuMW9UjCXweuCMrcryyXIbUSTxbpiYBwl1cIspAmMxvPpRyBMfuATIlVelF0MfOK4\nC4yTfJuA3CilRjQMGWoBnTVAguG02oJr5cY9U2IYTY4oSVSqGHKA4BKAJNVWRuKh\no4OtWvLTpXdsuA0IZNfeZZi9gyvgXk02FxNzI83+VDHLD0T+MN1bzQG3SkCXC5xs\n68u7IMfMR9uS7N0J3e26Verobw67HH1loPQHH6fWPwWu1LM9JeNo8B6SnTowTuPR\nKvNiLfCPAgMBAAECggEAYVDsfZNLjWWsQDWQoh8LGGR63AdOTSAiTYBGNac5ysUT\nY3iAOLrg6oxDlryLRt8/unGOQiZysdJIPL5q+EC+EECJWVN4Zxm5xhdJq+/146CF\nUcYZdlBxNJg+Pbk6Lflm/Csbc0qqmpQxPDfBFSMUlHNxQVE0cpNRY8K/BLPDtwD1\nly4ua3mEXHfIQ6wPlF7P4tiTsWw2C6QmAkcRnqYHLGBVaR3Q+1vbjmo8nOCMKazD\nUU8aFQvlk4xPOd7XY7P3+zRLInyL17+tOeZBuC1l9HPLLAMChn4qmgbNuPZhGVK4\nzudzysJh0q7L2I49RUYpAuVmu8u5PYRjCujWTC85MQKBgQD1ce3BRENYnAjM0sQL\nxbAttPy9r0teDpgLy92RMWH46KinxM3Y5ZTGDCU9wLXsrBlS+K9bjr++f0qykwq3\nerkdQqhefQ9h+cv/Okx1i0sakmwxvRJ0gxkBVK4etI1mzDhPjjSGXwXN6XppEY4/\nmwnajxiiLwva9MvgOCDuyjn9cQKBgQDdwRZMH8lSMytDFPDVN9Uw2dziLZGEA5nZ\nMxnTLw3QSiemTOSgNap036W34kW1d5HOKBnAkewb9e8zgwOvMnFHrm5bJpq4nkBG\nkWkCB2hsNe4mv/Ufsmb0Shh3XQtohOvd+6yHt8JsbaKlYmTSUpcB+e406Q2w/r54\nYSEeKmfN/wKBgCpGbUUUlOT2Oy3MP6gnbKjyu3WQc9LHgLjHbGpNrypIKIR9CVeK\nc42JGgEA6FTTb6ky3EFQ3QXatur7GKVxpeC8UnOz5qphdBmJ2RGF5HG3Npt6jWs0\nCWKJS1ROlOxX0HsjaziZtU46ILNoKrAZ7CCQ9RU6NTiJYXRFNqbqfgKBAoGAPHLr\nKhssHQ03yNSHhgfvRJ7O+JTlavA0WyHz8z6LbHEad9nUJNwcODnTCdpTmFEc3O7P\nflAI5eJXr1oSggqlGJ4zFQPj/1mcOeBfmJ7+VykoX0XKgzZ1nDgqjTc+6eH6DgwS\nDvkHtdj5Ek5NH4xF/9LqnV++TLZUo6oOhhOXMm8CgYAhrPhPaKIuEUWAnEZCgRaq\nZMjkzlLos6EBeRxQpOqm2J8NfRUJyyZa8YzLrh8E4+9WvbQpm/57oVgljW7GcTY8\npVIymxZURBzQDtBtgKexg+0XXfT1raiEXDE8JtIQ3z2KWsQrjTu19VDEHMn2HFkb\nMDFiqfqCLQS7APNOaTHjKQ==\n-----END PRIVATE KEY-----\n".replace("/\\n/g, '\n'"),
+    
+    // "client_email": process.env.GOOGLE_SHEETS_CREDENTIALS.client_email,
+    // "private_key": process.env.GOOGLE_SHEETS_CREDENTIALS.private_key.replace("/\\n/g, '\n'"),
   },
   scopes: ['https://www.googleapis.com/auth/spreadsheets']
 });
