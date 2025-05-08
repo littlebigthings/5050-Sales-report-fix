@@ -1,0 +1,19 @@
+{
+  "name": "webflow-orders-sync",
+  "version": "1.0.0",
+  "description": "Sync Webflow orders with Google Sheets",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "dotenv": "^16.3.1",
+    "express": "^4.21.2",
+    "googleapis": "^128.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
