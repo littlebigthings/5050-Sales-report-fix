@@ -20,14 +20,14 @@ const SHEET_RANGE_UPDATE = 'Sheet1!A:H'
 const OUTPUT_FILE = path.join(__dirname, 'orders.json');
 const TRACK_FILE = path.join(__dirname, 'progress.json');
 
-console.log(process.env.GOOGLE_SHEETS_CREDENTIALS)
+// console.log(process.env.GOOGLE_ACCOUNT)
 
 const auth = new google.auth.GoogleAuth({
-  credentials:{
+    credentials:{
+        "client_email": process.env.GOOGLE_ACCOUNT,
+        "private_key": process.env.GOOGLE_SHEET_PRIVATE.replace("/\\n/g, '\n'"),
+      },
     
-    // "client_email": process.env.GOOGLE_SHEETS_CREDENTIALS.client_email,
-    // "private_key": process.env.GOOGLE_SHEETS_CREDENTIALS.private_key.replace("/\\n/g, '\n'"),
-  },
   scopes: ['https://www.googleapis.com/auth/spreadsheets']
 });
 
